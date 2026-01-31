@@ -29,8 +29,7 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    # TODO: Replace with your actual Render backend URL
-    "your-backend-name.onrender.com",
+    "chemical-equipment-backend-g7ls.onrender.com",
 ]
 
 
@@ -130,25 +129,15 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-# CORS Configuration
+# CORS Configuration (Phase 1: Temporary - allow all origins to verify backend health)
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-
-# For local development, CORS_ALLOW_ALL_ORIGINS can be True
-# For production, use specific origins
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CORS_ALLOWED_ORIGINS = [
-        # TODO: Replace with your actual Vercel frontend URL
-        "https://your-frontend.vercel.app",
-    ]
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # TODO: Replace with your actual Vercel frontend URL
-    "https://your-frontend.vercel.app",
+    "https://chemical-equipment-backend-g7ls.onrender.com",
 ]
 
 REST_FRAMEWORK = {
@@ -161,15 +150,8 @@ REST_FRAMEWORK = {
 }
 
 # Cookie settings for cross-origin authentication
-# Production: SameSite=None + Secure=True required for cross-origin cookies over HTTPS
-# Development: SameSite=Lax + Secure=False for local testing
-if DEBUG:
-    SESSION_COOKIE_SAMESITE = "Lax"
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SAMESITE = "Lax"
-    CSRF_COOKIE_SECURE = False
-else:
-    SESSION_COOKIE_SAMESITE = "None"
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SAMESITE = "None"
-    CSRF_COOKIE_SECURE = True
+# SameSite=None + Secure=True required for cross-origin cookies over HTTPS
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
