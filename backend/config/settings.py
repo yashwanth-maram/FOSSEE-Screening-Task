@@ -129,15 +129,20 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-# CORS Configuration (Phase 1: Temporary - allow all origins to verify backend health)
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Configuration (Phase 2: Production - locked to specific origins)
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://chemical-equipment-frontend.vercel.app",
+]
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://chemical-equipment-backend-g7ls.onrender.com",
+    "https://chemical-equipment-frontend.vercel.app",
 ]
 
 REST_FRAMEWORK = {
