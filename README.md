@@ -1,17 +1,21 @@
-# Chemical Equipment Parameter Visualizer
+# 🧪 Chemical Equipment Parameter Visualizer
 
-**Hybrid Web + Desktop Application**
+> **Hybrid Web + Desktop Application** for CSV-based chemical equipment analytics with interactive visualizations.
 
-A data visualization system that allows users to upload CSV files containing chemical equipment data, performs statistical analysis via a Django REST API, and presents results through both a React web interface and a PyQt5 desktop application.
-
-This project was developed to satisfy the **FOSSEE Semester Long Internship screening task**, focusing on CSV-based analytics, shared backend APIs, and dual Web + Desktop visualization.
+[![Backend](https://img.shields.io/badge/Backend-Django%20REST-092E20?style=for-the-badge&logo=django)](https://chemical-equipment-backend-g7ls.onrender.com)
+[![Frontend](https://img.shields.io/badge/Frontend-React%20+%20Vite-61DAFB?style=for-the-badge&logo=react)](https://chemical-equipment-frontend.vercel.app)
+[![Desktop](https://img.shields.io/badge/Desktop-PyQt5-41CD52?style=for-the-badge&logo=python)](./desktop_app)
 
 ---
 
-## Demo Credentials
+## 🚀 Live Demo
 
-To simplify evaluation, a demo account is provided:
+| Platform | URL |
+|----------|-----|
+| 🌐 **Web Application** | **[chemical-equipment-frontend.vercel.app](https://chemical-equipment-frontend.vercel.app)** |
+| ⚙️ **Backend API** | **[chemical-equipment-backend-g7ls.onrender.com](https://chemical-equipment-backend-g7ls.onrender.com)** |
 
+### Demo Credentials
 ```
 Username: demo
 Password: demo1234
@@ -19,7 +23,17 @@ Password: demo1234
 
 ---
 
-## Technology Stack
+## 📋 Features
+
+- ✅ **CSV Upload & Analysis** — Upload equipment data and get instant statistical insights
+- ✅ **Interactive Charts** — Bar charts via Chart.js (Web) and Matplotlib (Desktop)
+- ✅ **Dataset History** — View last 5 uploaded datasets with timestamps
+- ✅ **PDF Reports** — Download comprehensive reports with embedded charts
+- ✅ **Dual Platform** — Consistent experience across Web and Desktop
+
+---
+
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -87,40 +101,65 @@ chemical-equipment-visualizer/
 
 ---
 
-### 1. Backend Setup
+### 1️⃣ Backend Setup
 
 ```bash
+# Navigate to backend directory
 cd backend
+
+# Create and activate virtual environment
 python -m venv venv
 
 # Windows
 venv\Scripts\activate
 
-# Linux / macOS
+# Linux/macOS
 source venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
+
+# Run migrations
 python manage.py migrate
+
+# Create demo user (first time only)
+python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_user('demo', 'demo@example.com', 'demo1234') if not User.objects.filter(username='demo').exists() else print('User exists')"
+
+# Start the server
 python manage.py runserver
 ```
 
-The backend API runs at: `http://127.0.0.1:8000`
+> 🟢 Backend runs at: `http://127.0.0.1:8000`
 
-### 2. Web Frontend Setup
+---
+
+### 2️⃣ Web Frontend Setup
 
 ```bash
+# Navigate to web frontend directory
 cd web-frontend
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
 ```
 
-The web application runs at: `http://localhost:5173`
+> 🟢 Web app runs at: `http://localhost:5173`
 
-### 3. Desktop Application Setup
+---
+
+### 3️⃣ Desktop Application Setup
 
 ```bash
+# Navigate to desktop app directory
 cd desktop_app
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the application
 python main.py
 ```
 
@@ -128,42 +167,33 @@ A native desktop window will open.
 
 ---
 
-## API Reference
+## 🔗 API Reference
 
-All endpoints are prefixed with `/api/`.
+All endpoints are prefixed with `/api/`
 
-| Endpoint | Method | Authentication | Description |
-|----------|--------|----------------|-------------|
-| `/csrf/` | GET | Public | Returns CSRF cookie |
-| `/login/` | POST | Public | Authenticates user and starts session |
-| `/auth-status/` | GET | Required | Checks authentication status |
-| `/upload-csv/` | POST | Public | Uploads CSV and returns analytics |
-| `/history/` | GET | Public | Returns last 5 uploaded datasets |
-| `/pdf/` | GET | Public | Generates and returns PDF report |
-
-### Authentication
-
-The application uses Django's session-based authentication. Both frontends:
-
-1. Fetch a CSRF token via `GET /api/csrf/`
-2. Submit credentials via `POST /api/login/`
-3. Maintain session cookies for subsequent authenticated requests
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/csrf/` | GET | Public | Get CSRF cookie |
+| `/login/` | POST | Public | Authenticate user |
+| `/upload-csv/` | POST | Public | Upload CSV & get analytics |
+| `/history/` | GET | Public | Get last 5 datasets |
+| `/pdf/` | GET | Public | Download PDF report |
 
 ---
 
-## CSV File Format
+## 📊 CSV Format
 
-The application expects CSV files with the following columns:
+The application expects CSV files with these columns:
 
-| Column | Type | Description |
-|--------|------|-------------|
-| Equipment Name | String | Equipment identifier |
-| Type | String | Category (Pump, Valve, etc.) |
-| Flowrate | Numeric | Flow rate value |
-| Pressure | Numeric | Pressure value |
-| Temperature | Numeric | Temperature value |
+| Column | Type | Example |
+|--------|------|---------|
+| Equipment Name | String | Pump-001 |
+| Type | String | Pump, Valve, Compressor |
+| Flowrate | Numeric | 150.5 |
+| Pressure | Numeric | 45.2 |
+| Temperature | Numeric | 85.0 |
 
-### Example
+### Sample CSV
 
 ```csv
 Equipment Name,Type,Flowrate,Pressure,Temperature
@@ -172,106 +202,27 @@ Valve-002,Valve,200.0,30.5,72.0
 Compressor-003,Compressor,180.0,60.0,95.5
 ```
 
-A sample file `sample_equipment.csv` is included in the repository.
+> 📁 Use `sample_equipment.csv` included in the repository for testing.
 
 ---
 
-## Features Implemented
+## ✅ Quick Test
 
-### CSV Upload and Analytics
-
-- CSV validation and column checking
-- Server-side parsing using Pandas
-- Computation of:
-  - Total equipment count
-  - Average flowrate
-  - Average pressure
-  - Average temperature
-  - Equipment type distribution
-
-### Data Visualization
-
-- **Web**: Bar charts using Chart.js
-- **Desktop**: Embedded Matplotlib charts within PyQt5
-
-### History Management
-
-- Maintains a rolling history of the last 5 uploaded datasets (global, as per task specification)
-- Displays filename and upload timestamp
-
-### PDF Report Generation
-
-- Generated server-side using ReportLab
-- Includes summary statistics and visual charts
-- Downloaded via authenticated endpoint
-
-### Authentication
-
-- Session-based authentication using Django
-- CSRF protection for all state-changing requests
-- Shared authentication flow across Web and Desktop clients
-
----
-
-## Design Decisions
-
-### Shared Backend
-
-A single Django REST backend serves both the Web and Desktop applications, ensuring consistent analytics and data handling.
-
-### Server-Side Analytics
-
-All CSV parsing and statistical computation occur on the backend. Frontends are purely presentational and consume pre-computed results.
-
-### Session-Based Authentication
-
-Django session authentication was chosen for simplicity and reliability, avoiding token management while supporting both browser and desktop clients.
-
-### Minimal UI
-
-The UI is intentionally minimal to emphasize correctness, clarity, and architectural alignment over visual complexity.
-
-### Admin Panel (Optional)
-
-Django's admin panel is enabled for inspecting stored datasets and verifying backend persistence. It is not required for normal application usage.
-
----
-
-## Manual Verification Steps
-
-1. Start the backend server
-2. Launch the web or desktop client
-3. Login using demo credentials
+1. Start backend server (`python manage.py runserver`)
+2. Start web frontend (`npm run dev`) or launch desktop app (`python main.py`)
+3. Login with demo credentials
 4. Upload `sample_equipment.csv`
-5. Verify analytics display and charts render
-6. Check history shows the upload
-7. Download PDF and verify it contains charts
+5. View analytics and charts
+6. Check history and download PDF report
 
 ---
 
-## Dependencies
-
-### Backend (`backend/requirements.txt`)
-- Django
-- djangorestframework
-- django-cors-headers
-- pandas
-- reportlab
-- matplotlib
-
-### Web Frontend (`web-frontend/package.json`)
-- react
-- axios
-- chart.js
-- react-chartjs-2
-
-### Desktop (`desktop_app/requirements.txt`)
-- PyQt5
-- requests
-- matplotlib
-
----
-
-## Author
+## 📝 License
 
 Developed as part of the **FOSSEE Semester Long Internship** screening task.
+
+---
+
+<p align="center">
+  <strong>Built with ❤️ using Django, React, and PyQt5</strong>
+</p>
