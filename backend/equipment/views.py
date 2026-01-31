@@ -285,7 +285,8 @@ class CSVUploadAPIView(GenericAPIView):
 
 class DatasetHistoryAPIView(GenericAPIView):
     serializer_class = DatasetHistorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = []  # Public access - no auth required
+    authentication_classes = []
     queryset = Dataset.objects.all().order_by("-uploaded_at")
 
     def get(self, request):
@@ -299,7 +300,8 @@ class DatasetHistoryAPIView(GenericAPIView):
 # =========================
 
 class DatasetPDFAPIView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []  # Public access - no auth required
+    authentication_classes = []
 
     def get(self, request):
         dataset = Dataset.objects.order_by("-uploaded_at").first()

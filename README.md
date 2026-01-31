@@ -138,8 +138,8 @@ All endpoints are prefixed with `/api/`.
 | `/login/` | POST | Public | Authenticates user and starts session |
 | `/auth-status/` | GET | Required | Checks authentication status |
 | `/upload-csv/` | POST | Public | Uploads CSV and returns analytics |
-| `/history/` | GET | Required | Returns last 5 uploaded datasets |
-| `/pdf/` | GET | Required | Generates and returns PDF report |
+| `/history/` | GET | Public | Returns last 5 uploaded datasets |
+| `/pdf/` | GET | Public | Generates and returns PDF report |
 
 ### Authentication
 
