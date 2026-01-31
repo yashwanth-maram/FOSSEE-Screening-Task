@@ -15,7 +15,7 @@ class APIClient:
     All windows share the same instance of this client.
     """
 
-    BASE_URL = "http://127.0.0.1:8000"
+    BASE_URL = "https://chemical-equipment-backend-g7ls.onrender.com"
 
     def __init__(self):
         self.session = requests.Session()
