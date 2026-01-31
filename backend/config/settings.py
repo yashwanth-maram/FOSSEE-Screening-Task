@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-qd&z%_&dlx56tvhz+0(-pn1dax_=y%t*6p@gil5s$!3ij-h42="
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    # TODO: Replace with your actual Render backend URL
+    "your-backend-name.onrender.com",
+]
 
 
 # Application definition
@@ -123,11 +129,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
-CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
+
+# For local development, CORS_ALLOW_ALL_ORIGINS can be True
+# For production, use specific origins
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [
+        # TODO: Replace with your actual Vercel frontend URL
+        "https://your-frontend.vercel.app",
+    ]
+
+# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    # TODO: Replace with your actual Vercel frontend URL
+    "https://your-frontend.vercel.app",
 ]
 
 REST_FRAMEWORK = {
@@ -139,8 +160,16 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Required for session cookies in local dev
-SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SECURE = False
+# Cookie settings for cross-origin authentication
+# Production: SameSite=None + Secure=True required for cross-origin cookies over HTTPS
+# Development: SameSite=Lax + Secure=False for local testing
+if DEBUG:
+    SESSION_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SECURE = False
+else:
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "None"
+    CSRF_COOKIE_SECURE = True
