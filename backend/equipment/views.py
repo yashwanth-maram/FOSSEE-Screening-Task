@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')  # Set non-interactive backend BEFORE any other matplotlib imports
+
 import pandas as pd
 from io import BytesIO
 
@@ -53,8 +56,6 @@ def compute_summary(df):
 
 
 def generate_pdf(dataset):
-    import matplotlib
-    matplotlib.use('Agg')  # Use non-interactive backend
     import matplotlib.pyplot as plt
     from reportlab.lib.utils import ImageReader
     

@@ -17,5 +17,16 @@ else:
     print('Demo user already exists')
 "
 
+# Create admin superuser if it doesn't exist
+python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin1234')
+    print('Admin superuser created')
+else:
+    print('Admin superuser already exists')
+"
+
 # Start Gunicorn server
 gunicorn config.wsgi:application --bind 0.0.0.0:10000
