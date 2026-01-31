@@ -5,6 +5,7 @@ Uses requests.Session() to maintain cookies across requests.
 Handles CSRF token fetching and attachment automatically.
 """
 
+import os
 import requests
 from typing import Optional, Dict, Any, Tuple
 
@@ -15,7 +16,8 @@ class APIClient:
     All windows share the same instance of this client.
     """
 
-    BASE_URL = "https://chemical-equipment-backend-g7ls.onrender.com"
+    # Use environment variable for API URL, fallback to localhost for development
+    BASE_URL = os.environ.get("API_URL", "http://127.0.0.1:8000")
 
     def __init__(self):
         self.session = requests.Session()
