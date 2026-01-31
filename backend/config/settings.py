@@ -159,8 +159,15 @@ REST_FRAMEWORK = {
 }
 
 # Cookie settings for cross-origin authentication
-# SameSite=None + Secure=True required for cross-origin cookies over HTTPS
-SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = True
+# Production: SameSite=None + Secure=True required for cross-origin cookies over HTTPS
+# Development: SameSite=Lax + Secure=False for localhost over HTTP
+if DEBUG:
+    SESSION_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SECURE = False
+else:
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "None"
+    CSRF_COOKIE_SECURE = True
